@@ -1,0 +1,3 @@
+Falta agregar los datos para que tenga la tabla para interpolar
+Poner apartado para hacer diferencia entre medida y calculada por el TPS
+Agregar la opción de poner el valor de PDD a la profundida de medida y con ello obtener la dosis máxima
