@@ -168,6 +168,7 @@ label {
   align-items: center;
   gap: 6px;
 }
+
 .input-field, select.input-field, input[type="date"].input-field {
   background: var(--color-input-bg);
   border: 1px solid rgba(63, 169, 255, 0.35);
@@ -198,9 +199,34 @@ label {
   padding: 9px 6px;
   font-size: 0.85rem;
 }
+
+/* ---------- ESTILO DE ALTO CONTRASTE PARA SELECT Y OPTION (MODO OSCURO) ---------- */
+select.input-field, .unit-select {
+  background-color: #0d1420; /* Fondo oscuro sólido para evitar transparencias del sistema */
+  color: #e6edf3;
+  cursor: pointer;
+}
+
+select.input-field option,
+.unit-select option,
+select option {
+  background-color: #0d1420 !important;
+  color: #e6edf3 !important;
+  padding: 10px;
+}
+
+/* Resaltado de opciones seleccionadas o enfocadas */
+select option:hover,
+select option:focus,
+select option:active,
+select option:checked {
+  background-color: #1f2e42 !important;
+  color: #00e5ff !important;
+}
+
 .triple-input { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
 
-/* Campo N_D,w: más ancho para que se lea bien el coeficiente de calibración */
+/* Campo N_D,w */
 .field-ndw { grid-column: span 2; }
 .field-ndw .input-with-unit { max-width: 420px; }
 .input-field-wide { flex: 3; min-width: 220px; }
@@ -254,9 +280,7 @@ th, td {
   border-bottom: 1px solid var(--panel-border);
 }
 th { color: var(--text-secondary); font-weight: 600; }
-.readings-table input, .kq-table input {
-  width: 100%;
-}
+.readings-table input { width: 100%; }
 
 .btn-icon-remove {
   background: transparent;
@@ -461,6 +485,11 @@ th { color: var(--text-secondary); font-weight: 600; }
 }
 .result-chip span { font-size: 0.72rem; color: var(--text-secondary); }
 .result-chip b { font-family: var(--font-mono); color: var(--color-result); font-size: 0.98rem; }
+
+/* Estilos de signos para TPS */
+.diff-value-pos { color: #2ee6a6; font-weight: 700; font-family: var(--font-mono); }
+.diff-value-neg { color: #ff5470; font-weight: 700; font-family: var(--font-mono); }
+.diff-value-zero { color: var(--text-primary); font-weight: 700; font-family: var(--font-mono); }
 
 .calc-trace {
   padding-left: 20px;

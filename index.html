@@ -90,11 +90,15 @@
     <div class="field-grid">
       <div class="field">
         <label for="fabricante">Fabricante</label>
-        <input type="text" id="fabricante" class="input-field">
+        <select id="fabricante" class="input-field">
+          <option value="">-- Seleccionar Fabricante --</option>
+        </select>
       </div>
       <div class="field">
         <label for="modeloCamara">Modelo</label>
-        <input type="text" id="modeloCamara" class="input-field">
+        <select id="modeloCamara" class="input-field">
+          <option value="">-- Seleccionar Modelo --</option>
+        </select>
       </div>
       <div class="field">
         <label for="numSerie">Número de serie</label>
@@ -104,7 +108,7 @@
         <label for="tipoCamara">Tipo de cámara</label>
         <select id="tipoCamara" class="input-field">
           <option value="">-- Seleccionar --</option>
-          <option value="cilindrica">Cilíndrica</option>
+          <option value="cilindrica" selected>Cilíndrica</option>
           <option value="plano-paralela">Plano-paralela</option>
           <option value="otra">Otra</option>
         </select>
@@ -118,7 +122,7 @@
         <input type="text" id="labCalibracion" class="input-field">
       </div>
       <div class="field">
-        <label for="calidadCalibracion">Calidad de calibración (Q0)</label>
+        <label for="calidadCalibracion">Calidad de calibración (Q₀)</label>
         <input type="text" id="calidadCalibracion" class="input-field" placeholder="ej. Co-60">
       </div>
       <div class="field field-ndw">
@@ -223,7 +227,6 @@
     <h2><span class="section-letter">F</span> Correcciones de la cámara</h2>
     <p class="field-note">Active únicamente los factores que sean aplicables a su cámara, electrómetro y condiciones de medida. Cada factor puede activarse/desactivarse de forma independiente.</p>
     <div class="factors-grid" id="factorsGrid">
-      <!-- Las tarjetas de factor se generan también estáticamente aquí -->
 
       <div class="factor-card" data-factor="kpol">
         <div class="factor-header">
@@ -232,7 +235,7 @@
             <span class="slider"></span>
           </label>
           <span class="factor-name">k<sub>pol</sub> — corrección por polaridad
-            <span class="help-icon" data-tip="k_pol = |M+| + |M-| / (2·M), donde M es la lectura con la polaridad utilizada de forma rutinaria.">?</span>
+            <span class="help-icon" data-tip="k_pol = (|M+| + |M-|) / (2·M), donde M es la lectura con la polaridad utilizada de forma rutinaria.">?</span>
           </span>
         </div>
         <div class="factor-body" id="body_kpol">
@@ -269,7 +272,7 @@
             <span class="slider"></span>
           </label>
           <span class="factor-name">k<sub>s</sub> — recombinación iónica
-            <span class="help-icon" data-tip="Puede introducirse directamente (método de dos voltajes / Jaffé) o dejarse como valor manual proveniente de tablas del TRS-398.">?</span>
+            <span class="help-icon" data-tip="Puede introducirse directamente o calcularse mediante el método de dos voltajes (polinomio TRS-398).">?</span>
           </span>
         </div>
         <div class="factor-body" id="body_ks">
@@ -286,8 +289,8 @@
             <input type="number" step="any" class="input-field factor-input" id="ksM1">
             <label>Lectura a voltaje reducido, M<sub>2</sub></label>
             <input type="number" step="any" class="input-field factor-input" id="ksM2">
-            <label>Coeficientes a₀, a₁, a₂ (polinomio TRS-398, Tabla A.1 / Ec. 2.10)
-              <span class="help-icon" data-tip="Los coeficientes del ajuste polinomial de dos voltajes dependen del tipo de radiación (pulsada / pulsada-barrida). Introdúzcalos según la Tabla del TRS-398.">?</span>
+            <label>Coeficientes a₀, a₁, a₂ (polinomio TRS-398, Ec. 2.10)
+              <span class="help-icon" data-tip="Los coeficientes del ajuste polinomial dependen del tipo de radiación. Introdúzcalos según la tabla del TRS-398.">?</span>
             </label>
             <div class="triple-input">
               <input type="number" step="any" class="input-field small" id="ksA0" placeholder="a0">
@@ -312,7 +315,7 @@
             <span class="slider"></span>
           </label>
           <span class="factor-name">k<sub>elec</sub> — calibración del electrómetro
-            <span class="help-icon" data-tip="Aplicable únicamente cuando la cámara y el electrómetro se calibraron por separado y el certificado de N_D,w no incluye ya esta corrección.">?</span>
+            <span class="help-icon" data-tip="Aplicable cuando la cámara y el electrómetro se calibraron por separado y el certificado no incluye ya esta corrección.">?</span>
           </span>
         </div>
         <div class="factor-body" id="body_kelec">
@@ -320,7 +323,7 @@
           <input type="number" step="any" class="input-field factor-input" id="kelecValor">
           <div class="factor-meta">
             <label>Fuente / procedencia</label>
-            <input type="text" class="input-field small" placeholder="ej. certificado de calibración del electrómetro" id="fuente_kelec">
+            <input type="text" class="input-field small" placeholder="ej. certificado del electrómetro" id="fuente_kelec">
             <label>Incertidumbre (%, k=1)</label>
             <input type="number" step="any" class="input-field small" id="unc_kelec">
           </div>
@@ -334,7 +337,7 @@
             <span class="slider"></span>
           </label>
           <span class="factor-name">k<sub>plastic</sub> (u otra corrección adicional)
-            <span class="help-icon" data-tip="Utilícese solo si el formalismo/condiciones lo requieren (p. ej. corrección por cápsula o material de la cuba en algún caso particular). No es un factor estándar general del TRS-398 para el formalismo de N_D,w.">?</span>
+            <span class="help-icon" data-tip="Utilícese solo si las condiciones o formalismo lo requieren.">?</span>
           </span>
         </div>
         <div class="factor-body" id="body_kplastic">
@@ -373,46 +376,48 @@
     </div>
   </section>
 
-  <!-- ============ H. FACTOR kQ,Q0 ============ -->
+  <!-- ============ H. FACTOR kQ,Q0 MEDIANTE TRS-398 ============ -->
   <section class="panel panel-wide" id="panel-H">
     <h2><span class="section-letter">H</span> Factor de calidad del haz k<sub>Q,Q0</sub></h2>
     <div class="kq-mode">
-      <label><input type="radio" name="kqMode" value="interp" checked> Obtener por interpolación desde tabla TPR<sub>20,10</sub> → k<sub>Q,Q0</sub></label>
-      <label><input type="radio" name="kqMode" value="manual"> Introducir k<sub>Q,Q0</sub> manualmente</label>
+      <label><input type="radio" name="kqMode" value="auto" checked> Modo automático: Cámara (TRS-398 Cuadro 14) + TPR<sub>20,10</sub> → Interpolación</label>
+      <label><input type="radio" name="kqMode" value="manual"> Modo manual: Introducir k<sub>Q,Q0</sub> directamente</label>
+    </div>
+
+    <div id="kqAutoBlock">
+      <div class="field-grid">
+        <div class="field">
+          <label for="kqFabricante">Fabricante de la cámara</label>
+          <select id="kqFabricante" class="input-field">
+            <option value="">-- Seleccionar Fabricante --</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="kqModelo">Modelo de la cámara</label>
+          <select id="kqModelo" class="input-field">
+            <option value="">-- Seleccionar Modelo --</option>
+          </select>
+        </div>
+      </div>
+      <div class="equation-box" style="margin-top: 12px;">
+        <p>Interpolación lineal usando datos del TRS-398 (Cuadro 14):</p>
+        <p class="equation">$$k_{Q,Q_0} = Y_1 + \dfrac{(X-X_1)}{(X_2-X_1)}\,(Y_2-Y_1)$$</p>
+      </div>
+      <div class="interp-detail" id="interpDetail">
+        <p>Seleccione un fabricante y modelo de cámara e introduzca el TPR<sub>20,10</sub> en la sección G para ver el detalle de la interpolación.</p>
+      </div>
     </div>
 
     <div id="kqManualBlock" class="hidden-block">
-      <div class="field">
-        <label for="kqManualValor">Valor de k<sub>Q,Q0</sub></label>
-        <input type="number" step="any" id="kqManualValor" class="input-field">
-      </div>
-      <div class="field">
-        <label for="kqManualFuente">Fuente (ej. Tabla 24/40 TRS-398, certificado, publicación)</label>
-        <input type="text" id="kqManualFuente" class="input-field">
-      </div>
-    </div>
-
-    <div id="kqInterpBlock">
-      <p class="field-note">
-        <strong>IMPORTANTE:</strong> esta tabla NO contiene valores oficiales del TRS-398. Debe completarla usted mismo con los pares TPR<sub>20,10</sub> / k<sub>Q,Q0</sub> de la tabla correspondiente del TRS-398 (Tabla 24 para cámaras cilíndricas ó Tabla 40 para plano-paralelas, según el tipo de cámara), o con los valores específicos del certificado/publicación aplicable a su cámara.
-      </p>
-      <table class="kq-table" id="kqTable">
-        <thead>
-          <tr><th>TPR<sub>20,10</sub></th><th>k<sub>Q,Q0</sub></th><th></th></tr>
-        </thead>
-        <tbody id="kqTableBody"></tbody>
-      </table>
-      <div class="button-row">
-        <button type="button" class="btn btn-secondary" id="btnAddKQRow">+ Agregar punto a la tabla</button>
-      </div>
-
-      <div class="equation-box">
-        <p>Interpolación lineal entre los dos puntos que rodean al TPR<sub>20,10</sub> medido:</p>
-        <p class="equation">$$k_{Q,Q_0} = Y_1 + \dfrac{(X-X_1)}{(X_2-X_1)}\,(Y_2-Y_1)$$</p>
-      </div>
-
-      <div class="interp-detail" id="interpDetail">
-        <p>Introduzca el TPR<sub>20,10</sub> en la sección G y complete la tabla para ver el detalle de la interpolación.</p>
+      <div class="field-grid">
+        <div class="field">
+          <label for="kqManualValor">Valor de k<sub>Q,Q0</sub></label>
+          <input type="number" step="any" id="kqManualValor" class="input-field" placeholder="ej. 0.992">
+        </div>
+        <div class="field">
+          <label for="kqManualFuente">Fuente / Referencia</label>
+          <input type="text" id="kqManualFuente" class="input-field" placeholder="ej. Certificado, TRS-398 manual">
+        </div>
       </div>
     </div>
 
@@ -425,9 +430,9 @@
   <section class="panel panel-wide" id="panel-I">
     <h2><span class="section-letter">I</span> Cálculo de dosis absorbida — formulación TRS-398</h2>
     <div class="equation-box">
-      <p>Lectura corregida M<sub>Q</sub> (todos los factores activados se multiplican; los desactivados se omiten):</p>
+      <p>Lectura corregida M<sub>Q</sub> (factores activados):</p>
       <p class="equation">$$M_Q = M \times k_{TP} \times k_{pol} \times k_s \times k_{elec} \times k_{plastic}$$</p>
-      <p>Dosis absorbida en agua en el punto de referencia, en la calidad Q del usuario:</p>
+      <p>Dosis absorbida en agua en el punto de referencia, en la calidad Q:</p>
       <p class="equation">$$D_{w,Q} = M_Q \times N_{D,w} \times k_{Q,Q_0}$$</p>
     </div>
     <div class="button-row button-row-main">
@@ -437,15 +442,7 @@
     </div>
   </section>
 
-  <!-- ============ WARNINGS ============ -->
-  <section class="panel panel-wide" id="panel-K">
-    <h2><span class="section-letter">K</span> Advertencias y validaciones</h2>
-    <div id="warningsBox" class="warnings-box">
-      <p class="no-warnings">Sin advertencias. Complete los datos y presione "CALCULAR DOSIS".</p>
-    </div>
-  </section>
-
-  <!-- ============ RESULTS ============ -->
+  <!-- ============ J. RESULTADOS ============ -->
   <section class="panel panel-wide panel-results" id="panel-J">
     <h2><span class="section-letter">J</span> Resultados</h2>
     <div class="dose-result-box">
@@ -470,8 +467,76 @@
     <ol class="calc-trace" id="calcTrace">
       <li>Presione "CALCULAR DOSIS" para generar el detalle paso a paso.</li>
     </ol>
+  </section>
 
-    <div class="button-row">
+  <!-- ============ K. COMPARACIÓN CON TPS ============ -->
+  <section class="panel panel-wide" id="panel-K">
+    <h2><span class="section-letter">K</span> Comparación con TPS</h2>
+    <div class="field-grid">
+      <div class="field">
+        <label for="dosisMedidaTPS">Dosis medida D<sub>medida</sub> (Gy)</label>
+        <input type="number" step="any" id="dosisMedidaTPS" class="input-field" readonly placeholder="Calculada automáticamente">
+      </div>
+      <div class="field">
+        <label for="dosisTPS">Dosis TPS D<sub>TPS</sub> (Gy)</label>
+        <input type="number" step="any" id="dosisTPS" class="input-field" placeholder="ej. 2.000">
+      </div>
+    </div>
+    <div class="results-grid" style="margin-top: 14px;">
+      <div class="result-chip">
+        <span>Diferencia absoluta (D<sub>medida</sub> − D<sub>TPS</sub>)</span>
+        <b id="diffAbsTPS" class="diff-value-zero">— Gy</b>
+      </div>
+      <div class="result-chip">
+        <span>Diferencia porcentual (%)</span>
+        <b id="diffPctTPS" class="diff-value-zero">— %</b>
+      </div>
+    </div>
+    <div class="equation-box" style="margin-top: 12px;">
+      <p class="equation">$$\text{Diferencia Absoluta} = D_{\text{medida}} - D_{\text{TPS}}$$</p>
+      <p class="equation">$$\text{Diferencia Porcentual (\%)} = \left[ \dfrac{D_{\text{medida}} - D_{\text{TPS}}}{D_{\text{TPS}}} \right] \times 100$$</p>
+    </div>
+  </section>
+
+  <!-- ============ L. DOSIS MÁXIMA MEDIANTE PDD ============ -->
+  <section class="panel panel-wide" id="panel-L">
+    <h2><span class="section-letter">L</span> Dosis máxima mediante PDD</h2>
+    <div class="field-grid">
+      <div class="field">
+        <label for="dosisMedidaPDD">Dosis medida a la profundidad de medición D<sub>medida</sub> (Gy)</label>
+        <input type="number" step="any" id="dosisMedidaPDD" class="input-field" placeholder="Tomada de D_{w,Q} o editable">
+      </div>
+      <div class="field">
+        <label for="pddInput">PDD (%)</label>
+        <input type="number" step="any" id="pddInput" class="input-field" placeholder="ej. 67.5">
+      </div>
+    </div>
+    <div class="results-grid" style="margin-top: 14px;">
+      <div class="result-chip">
+        <span>Dosis a profundidad de medida</span>
+        <b id="r_dosisMedidaPDD">— Gy</b>
+      </div>
+      <div class="result-chip">
+        <span>PDD introducido</span>
+        <b id="r_pddInput">— %</b>
+      </div>
+      <div class="result-chip">
+        <span>Dosis máxima calculada (D<sub>max</sub>)</span>
+        <b id="r_dmaxCalculada">— Gy</b>
+      </div>
+    </div>
+    <div class="equation-box" style="margin-top: 12px;">
+      <p class="equation">$$D_{\text{max}} = \dfrac{D_{\text{medida}}}{PDD / 100} \quad \text{con } PDD = 100\% \text{ en } d_{\text{max}}$$</p>
+    </div>
+  </section>
+
+  <!-- ============ M. ADVERTENCIAS Y VALIDACIONES ============ -->
+  <section class="panel panel-wide" id="panel-M">
+    <h2><span class="section-letter">M</span> Advertencias y validaciones</h2>
+    <div id="warningsBox" class="warnings-box">
+      <p class="no-warnings">Sin advertencias. Complete los datos y presione "CALCULAR DOSIS".</p>
+    </div>
+    <div class="button-row button-row-main" style="margin-top: 16px;">
       <button type="button" class="btn btn-secondary" id="btnExportCSV">EXPORTAR CSV</button>
       <button type="button" class="btn btn-secondary" id="btnExportTXT">EXPORTAR TXT</button>
       <button type="button" class="btn btn-secondary" id="btnImprimir">IMPRIMIR REPORTE</button>
