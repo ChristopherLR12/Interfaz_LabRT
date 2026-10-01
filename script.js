@@ -4,12 +4,19 @@
    ========================================================= */
 
 /* ---------------------------------------------------------
-   BD OFICIAL kQ,Q0 TRS-398 (CUADRO 14 - HACES DE FOTONES)
+   EJE DE TPR20,10 OFICIALES (CUADRO 14 Y TABLA 16)
    --------------------------------------------------------- */
-const TRS398_TPR_AXIS = [
+const TRS398_TPR_AXIS_14 = [
   0.50, 0.53, 0.56, 0.59, 0.62, 0.65, 0.68, 0.70, 0.72, 0.74, 0.76, 0.78, 0.80, 0.82, 0.84
 ];
 
+const TRS398_TPR_AXIS_16 = [
+  0.56, 0.59, 0.62, 0.65, 0.68, 0.70, 0.72, 0.74, 0.76, 0.78, 0.80, 0.82
+];
+
+/* ---------------------------------------------------------
+   BASE DE DATOS COMPLETA DE CÁMARAS kQ,Q0
+   --------------------------------------------------------- */
 const TRS398_CHAMBERS = {
   "Capintec": {
     "PR-05P mini": [1.004, 1.003, 1.002, 1.001, 1.000, 0.998, 0.996, 0.994, 0.991, 0.987, 0.983, 0.975, 0.968, 0.960, 0.949],
@@ -60,11 +67,24 @@ const TRS398_CHAMBERS = {
     "30004 / 30012 Farmer": [1.006, 1.005, 1.002, 1.000, 0.999, 0.996, 0.994, 0.992, 0.989, 0.986, 0.982, 0.976, 0.969, 0.962, 0.950],
     "30006 / 30013 Farmer": [1.002, 1.002, 1.000, 0.999, 0.997, 0.994, 0.990, 0.988, 0.984, 0.980, 0.975, 0.968, 0.960, 0.952, 0.940],
     "31002 flexible": [1.003, 1.002, 1.000, 0.999, 0.997, 0.994, 0.990, 0.988, 0.984, 0.980, 0.975, 0.968, 0.960, 0.952, 0.940],
-    "31003 flexible": [1.003, 1.002, 1.000, 0.999, 0.997, 0.994, 0.990, 0.988, 0.984, 0.980, 0.975, 0.968, 0.960, 0.952, 0.940]
+    "31003 flexible": [1.003, 1.002, 1.000, 0.999, 0.997, 0.994, 0.990, 0.988, 0.984, 0.980, 0.975, 0.968, 0.960, 0.952, 0.940],
+    /* --- Modelos agregados de Tabla 16 (12 puntos) --- */
+    "30010 Farmer (Tabla 16)": { axis: TRS398_TPR_AXIS_16, values: [1.0005, 0.9989, 0.9967, 0.9938, 0.9901, 0.9869, 0.9832, 0.9787, 0.9734, 0.9671, 0.9595, 0.9506] },
+    "30011 Farmer (Tabla 16)": { axis: TRS398_TPR_AXIS_16, values: [1.0005, 0.9989, 0.9969, 0.9942, 0.9906, 0.9875, 0.9838, 0.9793, 0.9739, 0.9674, 0.9595, 0.9501] },
+    "30012 Farmer (Tabla 16)": { axis: TRS398_TPR_AXIS_16, values: [1.0004, 0.9990, 0.9970, 0.9944, 0.9910, 0.9881, 0.9846, 0.9804, 0.9754, 0.9694, 0.9622, 0.9536] },
+    "30013 Farmer (Tabla 16)": { axis: TRS398_TPR_AXIS_16, values: [1.0007, 0.9984, 0.9956, 0.9920, 0.9876, 0.9840, 0.9800, 0.9753, 0.9699, 0.9636, 0.9565, 0.9484] },
+    "31010 Semiflex": { axis: TRS398_TPR_AXIS_16, values: [1.0008, 0.9982, 0.9952, 0.9914, 0.9869, 0.9835, 0.9795, 0.9750, 0.9700, 0.9643, 0.9579, 0.9507] },
+    "31013 Semiflex": { axis: TRS398_TPR_AXIS_16, values: [1.0007, 0.9985, 0.9958, 0.9924, 0.9882, 0.9848, 0.9810, 0.9765, 0.9714, 0.9655, 0.9588, 0.9511] },
+    "31016 PinPoint 3D": { axis: TRS398_TPR_AXIS_16, values: [1.0006, 0.9987, 0.9962, 0.9930, 0.9888, 0.9853, 0.9812, 0.9762, 0.9703, 0.9632, 0.9549, 0.9451] },
+    "31021 Semiflex 3D": { axis: TRS398_TPR_AXIS_16, values: [1.0007, 0.9984, 0.9957, 0.9925, 0.9886, 0.9856, 0.9823, 0.9786, 0.9744, 0.9697, 0.9645, 0.9587] },
+    "31022 PinPoint 3D": { axis: TRS398_TPR_AXIS_16, values: [1.0005, 0.9989, 0.9968, 0.9940, 0.9905, 0.9875, 0.9840, 0.9798, 0.9749, 0.9690, 0.9621, 0.9540] }
   },
-  "SNC": {
+  "SNC / Sun Nuclear": {
     "100730 Farmer": [1.004, 1.003, 1.001, 0.999, 0.997, 0.993, 0.990, 0.988, 0.985, 0.981, 0.977, 0.970, 0.963, 0.956, 0.944],
-    "100740 Farmer": [1.006, 1.005, 1.002, 1.000, 0.999, 0.996, 0.994, 0.992, 0.990, 0.987, 0.983, 0.977, 0.971, 0.963, 0.951]
+    "100740 Farmer": [1.006, 1.005, 1.002, 1.000, 0.999, 0.996, 0.994, 0.992, 0.990, 0.987, 0.983, 0.977, 0.971, 0.963, 0.951],
+    /* --- Modelos agregados de Tabla 16 --- */
+    "SNC125c": { axis: TRS398_TPR_AXIS_16, values: [1.0005, 0.9991, 0.9971, 0.9944, 0.9908, 0.9878, 0.9840, 0.9794, 0.9739, 0.9671, 0.9590, 0.9492] },
+    "SNC600c Farmer": { axis: TRS398_TPR_AXIS_16, values: [1.0004, 0.9993, 0.9978, 0.9957, 0.9926, 0.9899, 0.9866, 0.9823, 0.9770, 0.9703, 0.9620, 0.9517] }
   },
   "Victoreen": {
     "Radocon III 550": [1.005, 1.004, 1.001, 0.998, 0.996, 0.993, 0.989, 0.986, 0.983, 0.979, 0.975, 0.968, 0.961, 0.954, 0.943],
@@ -355,8 +375,19 @@ function recomputeLiveFactors() {
 }
 
 /* ---------------------------------------------------------
-   7. INTERPOLACIÓN LINEAL kQ,Q0 TRS-398
+   7. INTERPOLACIÓN LINEAL kQ,Q0 MULTI-TABLA (TABLA 14 Y TABLA 16)
    --------------------------------------------------------- */
+function getChamberData(mfg, model) {
+  if (!mfg || !model || !TRS398_CHAMBERS[mfg] || !TRS398_CHAMBERS[mfg][model]) {
+    return null;
+  }
+  const raw = TRS398_CHAMBERS[mfg][model];
+  if (Array.isArray(raw)) {
+    return { axis: TRS398_TPR_AXIS_14, values: raw };
+  }
+  return raw;
+}
+
 function updateKQFromTPR() {
   const mode = document.querySelector('input[name="kqMode"]:checked').value;
   const detailBox = document.getElementById("interpDetail");
@@ -372,7 +403,9 @@ function updateKQFromTPR() {
   const model = document.getElementById("kqModelo").value;
   const tpr = toNumber(document.getElementById("tpr2010").value);
 
-  if (!mfg || !model || !TRS398_CHAMBERS[mfg] || !TRS398_CHAMBERS[mfg][model]) {
+  const chamberData = getChamberData(mfg, model);
+
+  if (!chamberData) {
     detailBox.innerHTML = "<p>Seleccione un fabricante y un modelo de cámara válidos para realizar la interpolación automática.</p>";
     kqValueBox.textContent = "—";
     return NaN;
@@ -384,14 +417,14 @@ function updateKQFromTPR() {
     return NaN;
   }
 
-  const values = TRS398_CHAMBERS[mfg][model];
-  const axis = TRS398_TPR_AXIS;
+  const axis = chamberData.axis;
+  const values = chamberData.values;
   const minTPR = axis[0];
   const maxTPR = axis[axis.length - 1];
 
   // Verificación estricta de rango (NO EXTRAPOLAR)
   if (tpr < minTPR || tpr > maxTPR) {
-    detailBox.innerHTML = `<p style="color:var(--color-warning)"><b>⚠ ADVERTENCIA DE RANGO:</b> El TPR<sub>20,10</sub> = ${fmt(tpr,3)} está fuera del intervalo oficial del TRS-398 [${minTPR.toFixed(2)} , ${maxTPR.toFixed(2)}]. NO se realiza extrapolación. Utilice el modo manual si dispone de datos válidos.</p>`;
+    detailBox.innerHTML = `<p style="color:var(--color-warning)"><b>⚠ ADVERTENCIA DE RANGO:</b> El TPR<sub>20,10</sub> = ${fmt(tpr,3)} está fuera del intervalo oficial de la tabla [${minTPR.toFixed(2)} , ${maxTPR.toFixed(2)}]. NO se realiza extrapolación. Utilice el modo manual si dispone de datos válidos.</p>`;
     kqValueBox.textContent = "—";
     return NaN;
   }
@@ -403,7 +436,7 @@ function updateKQFromTPR() {
     detailBox.innerHTML =
       `<b>Cámara:</b> ${mfg} ${model}<br>` +
       `TPR<sub>20,10</sub> = ${fmt(tpr,3)} coincide exactamente con un punto de la tabla TRS-398.<br>` +
-      `<b>Punto utilizado:</b> TPR<sub>20,10</sub> = ${axis[exactIndex].toFixed(2)} → k<sub>Q,Q0</sub> = ${fmt(kqExact, 3)}<br>` +
+      `<b>Punto utilizado:</b> TPR<sub>20,10</sub> = ${axis[exactIndex].toFixed(2)} → k<sub>Q,Q0</sub> = ${fmt(kqExact, 4)}<br>` +
       `<b>k<sub>Q,Q0</sub> = ${fmt(kqExact, 4)}</b>`;
     kqValueBox.textContent = fmt(kqExact, 4);
     return kqExact;
@@ -426,9 +459,9 @@ function updateKQFromTPR() {
     `<b>Cámara:</b> ${mfg} ${model}<br>` +
     `<b>TPR<sub>20,10</sub> introducido:</b> ${fmt(tpr,3)}<br>` +
     `<b>Puntos de la tabla utilizados para la interpolación:</b><br>` +
-    `• Punto 1 (inferior): TPR<sub>20,10</sub> = ${x1.toFixed(2)} &nbsp;→&nbsp; k<sub>Q,Q0</sub> = ${y1.toFixed(3)}<br>` +
-    `• Punto 2 (superior): TPR<sub>20,10</sub> = ${x2.toFixed(2)} &nbsp;→&nbsp; k<sub>Q,Q0</sub> = ${y2.toFixed(3)}<br><br>` +
-    `$$k_{Q,Q_0} = ${y1.toFixed(3)} + \\dfrac{(${fmt(tpr,3)} - ${x1.toFixed(2)})}{(${x2.toFixed(2)} - ${x1.toFixed(2)})}\\times (${y2.toFixed(3)} - ${y1.toFixed(3)}) = ${fmt(kqInterp, 4)}$$<br>` +
+    `• Punto 1 (inferior): TPR<sub>20,10</sub> = ${x1.toFixed(2)} &nbsp;→&nbsp; k<sub>Q,Q0</sub> = ${y1.toFixed(4)}<br>` +
+    `• Punto 2 (superior): TPR<sub>20,10</sub> = ${x2.toFixed(2)} &nbsp;→&nbsp; k<sub>Q,Q0</sub> = ${y2.toFixed(4)}<br><br>` +
+    `$$k_{Q,Q_0} = ${y1.toFixed(4)} + \\dfrac{(${fmt(tpr,3)} - ${x1.toFixed(2)})}{(${x2.toFixed(2)} - ${x1.toFixed(2)})}\\times (${y2.toFixed(4)} - ${y1.toFixed(4)}) = ${fmt(kqInterp, 4)}$$<br>` +
     `<b>k<sub>Q,Q0</sub> interpolado = ${fmt(kqInterp, 4)}</b>`;
 
   if (window.MathJax) {
@@ -440,7 +473,7 @@ function updateKQFromTPR() {
 }
 
 /* ---------------------------------------------------------
-   8. FUNCIÓN 1: COMPARACIÓN CON TPS
+   8. COMPARACIÓN CON TPS
    --------------------------------------------------------- */
 function updateTPSComparison(doseMedida) {
   const inputMedida = document.getElementById("dosisMedidaTPS");
@@ -485,7 +518,7 @@ function updateTPSComparison(doseMedida) {
 }
 
 /* ---------------------------------------------------------
-   9. FUNCIÓN 2: DOSIS MÁXIMA MEDIANTE PDD
+   9. DOSIS MÁXIMA MEDIANTE PDD
    --------------------------------------------------------- */
 function updatePDDMaxDose(doseMedidaAuto) {
   const inputMedida = document.getElementById("dosisMedidaPDD");
@@ -563,7 +596,12 @@ function validateAll() {
     const tpr = toNumber(document.getElementById("tpr2010").value);
     if (!mfg || !model) warnings.push("Falta seleccionar el fabricante o modelo de la cámara en la sección de kQ,Q0.");
     if (!isValidNumber(tpr)) warnings.push("Falta introducir el TPR20,10 medido.");
-    else if (tpr < 0.50 || tpr > 0.84) warnings.push(`El TPR20,10 (${fmt(tpr,3)}) está fuera del intervalo oficial TRS-398 (0.50 a 0.84). NO se realiza extrapolación.`);
+    else {
+      const cData = getChamberData(mfg, model);
+      if (cData && (tpr < cData.axis[0] || tpr > cData.axis[cData.axis.length - 1])) {
+        warnings.push(`El TPR20,10 (${fmt(tpr,3)}) está fuera del intervalo oficial de la cámara seleccionada [${cData.axis[0].toFixed(2)} - ${cData.axis[cData.axis.length - 1].toFixed(2)}]. NO se realiza extrapolación.`);
+      }
+    }
   } else {
     const kqManual = toNumber(document.getElementById("kqManualValor").value);
     if (!isValidNumber(kqManual)) warnings.push("Falta introducir manualmente el valor de kQ,Q0.");
@@ -644,7 +682,6 @@ function calcularDosis() {
   updateResultsGrid(lastResult);
   renderCalcTrace(lastResult);
 
-  // Actualizar secciones TPS y PDD con el resultado calculado
   updateTPSComparison(dose);
   updatePDDMaxDose(dose);
 }
@@ -673,7 +710,7 @@ function renderCalcTrace(r) {
     `<b>7. Lectura corregida:</b> MQ = M̄ × kTP × kpol × ks × kelec × kplastic = ${fmt(r.MQ)}.`,
     `<b>8. Obtención de kQ,Q0:</b> TPR20,10 = ${isValidNumber(r.tpr) ? fmt(r.tpr,3) : "n/a"} → kQ,Q0 = ${fmt(r.kQ, 4)}.`,
     `<b>9. Aplicación de N_D,w:</b> N_D,w = ${isValidNumber(r.ndw) ? fmtSci(r.ndw) : "n/a"}.`,
-    `<b>10. Resultado final:</b> Dw,Q = MQ × N_D,w × kQ,Q0 = ${isValidNumber(r.dose) ? fmt(r.dose, 5) + " Gy" : "no calculated"}.`
+    `<b>10. Resultado final:</b> Dw,Q = MQ × N_D,w × kQ,Q0 = ${isValidNumber(r.dose) ? fmt(r.dose, 5) + " Gy" : "no calculado"}.`
   ];
   document.getElementById("calcTrace").innerHTML = steps.map(s => `<li>${s}</li>`).join("");
 }
@@ -864,7 +901,6 @@ function initEventListeners() {
   document.getElementById("tpr2010").addEventListener("input", updateKQFromTPR);
   document.getElementById("kqManualValor").addEventListener("input", updateKQFromTPR);
 
-  // Escuchadores para Comparación TPS y PDD
   document.getElementById("dosisTPS").addEventListener("input", () => updateTPSComparison());
   document.getElementById("dosisMedidaPDD").addEventListener("input", () => {
     state.pddUserEdited = true;

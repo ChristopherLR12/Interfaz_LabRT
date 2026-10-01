@@ -202,7 +202,7 @@ label {
 
 /* ---------- ESTILO DE ALTO CONTRASTE PARA SELECT Y OPTION (MODO OSCURO) ---------- */
 select.input-field, .unit-select {
-  background-color: #0d1420; /* Fondo oscuro sólido para evitar transparencias del sistema */
+  background-color: #0d1420;
   color: #e6edf3;
   cursor: pointer;
 }
@@ -215,7 +215,6 @@ select option {
   padding: 10px;
 }
 
-/* Resaltado de opciones seleccionadas o enfocadas */
 select option:hover,
 select option:focus,
 select option:active,
