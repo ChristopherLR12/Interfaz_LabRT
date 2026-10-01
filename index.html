@@ -1,0 +1,556 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Calculadora de Dosis Absorbida en Agua — TRS-398 (IAEA) — Fotones</title>
+<link rel="stylesheet" href="style.css">
+<script>
+  MathJax = {
+    tex: { inlineMath: [['$', '$'], ['\\(', '\\)']] },
+    svg: { fontCache: 'global' }
+  };
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.min.js" defer></script>
+</head>
+<body>
+
+<header class="app-header">
+  <div class="header-content">
+    <h1>Calculadora de Dosis Absorbida en Agua — Fotones</h1>
+    <p class="subtitle">Protocolo TRS-398 (IAEA) — Dosimetría de referencia de haces de fotones de acelerador lineal</p>
+  </div>
+  <div class="header-legend">
+    <span class="legend-item legend-input">Entradas</span>
+    <span class="legend-item legend-factor">Factores de corrección</span>
+    <span class="legend-item legend-result">Resultados</span>
+    <span class="legend-item legend-warning">Advertencias</span>
+  </div>
+</header>
+
+<main class="app-grid">
+
+  <!-- ============ A. INFORMACIÓN GENERAL ============ -->
+  <section class="panel" id="panel-A">
+    <h2><span class="section-letter">A</span> Información general</h2>
+    <div class="field-grid">
+      <div class="field">
+        <label for="operador">Operador / Físico responsable</label>
+        <input type="text" id="operador" class="input-field">
+      </div>
+      <div class="field">
+        <label for="institucion">Institución</label>
+        <input type="text" id="institucion" class="input-field">
+      </div>
+      <div class="field">
+        <label for="fechaMedicion">Fecha de medición</label>
+        <input type="date" id="fechaMedicion" class="input-field">
+      </div>
+      <div class="field">
+        <label for="acelerador">Acelerador / Equipo</label>
+        <input type="text" id="acelerador" class="input-field">
+      </div>
+      <div class="field">
+        <label for="energiaNominal">Energía nominal del haz de fotones (MV)</label>
+        <input type="text" id="energiaNominal" class="input-field">
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ B. CONDICIONES DE REFERENCIA ============ -->
+  <section class="panel" id="panel-B">
+    <h2><span class="section-letter">B</span> Condiciones de referencia</h2>
+    <div class="field-grid">
+      <div class="field">
+        <label for="ssd_sad">Configuración geométrica</label>
+        <select id="ssd_sad" class="input-field">
+          <option value="SSD">SSD (distancia fuente-superficie)</option>
+          <option value="SAD">SAD (distancia fuente-eje)</option>
+        </select>
+      </div>
+      <div class="field">
+        <label for="distanciaRef">Distancia de referencia (cm)</label>
+        <input type="number" step="any" id="distanciaRef" class="input-field">
+      </div>
+      <div class="field">
+        <label for="profundidadRef">Profundidad de referencia z_ref (cm)</label>
+        <input type="number" step="any" id="profundidadRef" class="input-field">
+      </div>
+      <div class="field">
+        <label for="campoRef">Tamaño de campo de referencia (cm × cm)</label>
+        <input type="text" id="campoRef" class="input-field" placeholder="ej. 10x10">
+      </div>
+    </div>
+    <p class="field-note">Estos datos son informativos para el reporte; no intervienen directamente en el cálculo numérico salvo a través de los factores introducidos por el usuario.</p>
+  </section>
+
+  <!-- ============ C. DATOS DE LA CÁMARA DE IONIZACIÓN ============ -->
+  <section class="panel" id="panel-C">
+    <h2><span class="section-letter">C</span> Datos de la cámara de ionización</h2>
+    <div class="field-grid">
+      <div class="field">
+        <label for="fabricante">Fabricante</label>
+        <select id="fabricante" class="input-field">
+          <option value="">-- Seleccionar Fabricante --</option>
+        </select>
+      </div>
+      <div class="field">
+        <label for="modeloCamara">Modelo</label>
+        <select id="modeloCamara" class="input-field">
+          <option value="">-- Seleccionar Modelo --</option>
+        </select>
+      </div>
+      <div class="field">
+        <label for="numSerie">Número de serie</label>
+        <input type="text" id="numSerie" class="input-field">
+      </div>
+      <div class="field">
+        <label for="tipoCamara">Tipo de cámara</label>
+        <select id="tipoCamara" class="input-field">
+          <option value="">-- Seleccionar --</option>
+          <option value="cilindrica" selected>Cilíndrica</option>
+          <option value="plano-paralela">Plano-paralela</option>
+          <option value="otra">Otra</option>
+        </select>
+      </div>
+      <div class="field">
+        <label for="fechaCalibracion">Fecha de calibración</label>
+        <input type="date" id="fechaCalibracion" class="input-field">
+      </div>
+      <div class="field">
+        <label for="labCalibracion">Laboratorio de calibración</label>
+        <input type="text" id="labCalibracion" class="input-field">
+      </div>
+      <div class="field">
+        <label for="calidadCalibracion">Calidad de calibración (Q₀)</label>
+        <input type="text" id="calidadCalibracion" class="input-field" placeholder="ej. Co-60">
+      </div>
+      <div class="field field-ndw">
+        <label for="ndw">N<sub>D,w</sub> (coeficiente de calibración)</label>
+        <div class="input-with-unit">
+          <input type="number" step="any" id="ndw" class="input-field input-field-wide">
+          <select id="ndwUnidad" class="unit-select">
+            <option value="Gy/C">Gy/C</option>
+            <option value="Gy/nC">Gy/nC</option>
+            <option value="Gy/lectura">Gy/lectura (unidad de escala)</option>
+          </select>
+        </div>
+      </div>
+      <div class="field">
+        <label for="ndwIncertidumbre">Incertidumbre de N<sub>D,w</sub> (%, k=1)</label>
+        <input type="number" step="any" id="ndwIncertidumbre" class="input-field">
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ D. LECTURAS DE LA CÁMARA ============ -->
+  <section class="panel" id="panel-D">
+    <h2><span class="section-letter">D</span> Lecturas de la cámara</h2>
+    <p class="field-note">Introduzca las lecturas individuales M<sub>i</sub> (ya corregidas por fuga si corresponde). Se calculará automáticamente el promedio, la desviación estándar y la incertidumbre tipo A.</p>
+    <table class="readings-table" id="readingsTable">
+      <thead>
+        <tr><th>#</th><th>Lectura M (nC o unidad de escala)</th><th></th></tr>
+      </thead>
+      <tbody id="readingsTableBody">
+        <!-- filas generadas dinámicamente -->
+      </tbody>
+    </table>
+    <div class="button-row">
+      <button type="button" class="btn btn-secondary" id="btnAddReading">+ Agregar lectura</button>
+    </div>
+    <div class="stats-summary" id="readingsStats">
+      <div class="stat-box"><span class="stat-label">n</span><span class="stat-value" id="statN">—</span></div>
+      <div class="stat-box"><span class="stat-label">Promedio M̄</span><span class="stat-value" id="statMean">—</span></div>
+      <div class="stat-box"><span class="stat-label">Desv. estándar (s)</span><span class="stat-value" id="statStdev">—</span></div>
+      <div class="stat-box"><span class="stat-label">Incert. tipo A (%, k=1)</span><span class="stat-value" id="statUA">—</span></div>
+    </div>
+  </section>
+
+  <!-- ============ E. TEMPERATURA Y PRESIÓN ============ -->
+  <section class="panel" id="panel-E">
+    <h2><span class="section-letter">E</span> Corrección por temperatura y presión — k<sub>TP</sub></h2>
+    <div class="field-grid">
+      <div class="field">
+        <label for="tMed">Temperatura medida (T)</label>
+        <div class="input-with-unit">
+          <input type="number" step="any" id="tMed" class="input-field">
+          <select id="tMedUnidad" class="unit-select">
+            <option value="C">°C</option>
+            <option value="K">K</option>
+          </select>
+        </div>
+      </div>
+      <div class="field">
+        <label for="tCal">Temperatura de referencia/calibración (T₀)</label>
+        <div class="input-with-unit">
+          <input type="number" step="any" id="tCal" class="input-field" value="20">
+          <select id="tCalUnidad" class="unit-select">
+            <option value="C">°C</option>
+            <option value="K">K</option>
+          </select>
+        </div>
+      </div>
+      <div class="field">
+        <label for="pMed">Presión medida (P)</label>
+        <div class="input-with-unit">
+          <input type="number" step="any" id="pMed" class="input-field">
+          <select id="pMedUnidad" class="unit-select">
+            <option value="kPa">kPa</option>
+            <option value="hPa">hPa</option>
+            <option value="mbar">mbar</option>
+          </select>
+        </div>
+      </div>
+      <div class="field">
+        <label for="pCal">Presión de referencia/calibración (P₀)</label>
+        <div class="input-with-unit">
+          <input type="number" step="any" id="pCal" class="input-field" value="101.3">
+          <select id="pCalUnidad" class="unit-select">
+            <option value="kPa">kPa</option>
+            <option value="hPa">hPa</option>
+            <option value="mbar">mbar</option>
+          </select>
+        </div>
+      </div>
+    </div>
+    <div class="equation-box">
+      <p>Ecuación (TRS-398, corrección a condiciones de referencia de temperatura y presión):</p>
+      <p class="equation">$$k_{TP} = \dfrac{(273.2 + T)}{(273.2 + T_0)} \times \dfrac{P_0}{P}$$</p>
+    </div>
+    <div class="result-inline" id="ktpResultBox">
+      <span class="factor-label">k<sub>TP</sub> =</span> <span class="factor-value" id="ktpValue">—</span>
+    </div>
+  </section>
+
+  <!-- ============ F. CORRECCIONES DE LA CÁMARA ============ -->
+  <section class="panel panel-wide" id="panel-F">
+    <h2><span class="section-letter">F</span> Correcciones de la cámara</h2>
+    <p class="field-note">Active únicamente los factores que sean aplicables a su cámara, electrómetro y condiciones de medida. Cada factor puede activarse/desactivarse de forma independiente.</p>
+    <div class="factors-grid" id="factorsGrid">
+
+      <div class="factor-card" data-factor="kpol">
+        <div class="factor-header">
+          <label class="switch">
+            <input type="checkbox" id="usar_kpol">
+            <span class="slider"></span>
+          </label>
+          <span class="factor-name">k<sub>pol</sub> — corrección por polaridad
+            <span class="help-icon" data-tip="k_pol = (|M+| + |M-|) / (2·M), donde M es la lectura con la polaridad utilizada de forma rutinaria.">?</span>
+          </span>
+        </div>
+        <div class="factor-body" id="body_kpol">
+          <div class="ks-mode">
+            <label><input type="radio" name="kpolMode" value="calc" checked> Calcular a partir de M<sup>+</sup>/M<sup>−</sup></label>
+            <label><input type="radio" name="kpolMode" value="manual"> Introducir k<sub>pol</sub> directamente</label>
+          </div>
+          <div id="kpolCalcBlock">
+            <label>Lectura con polaridad (+), M<sup>+</sup></label>
+            <input type="number" step="any" class="input-field factor-input" id="mPos">
+            <label>Lectura con polaridad (−), M<sup>−</sup></label>
+            <input type="number" step="any" class="input-field factor-input" id="mNeg">
+            <label>Lectura usada rutinariamente, M</label>
+            <input type="number" step="any" class="input-field factor-input" id="mRutina">
+          </div>
+          <div id="kpolManualBlock" class="hidden-block">
+            <label>Valor de k<sub>pol</sub></label>
+            <input type="number" step="any" class="input-field factor-input" id="kpolManual">
+          </div>
+          <div class="factor-meta">
+            <label>Fuente / procedencia</label>
+            <input type="text" class="input-field small" value="TRS-398, Ec. 2.13" id="fuente_kpol">
+            <label>Incertidumbre (%, k=1)</label>
+            <input type="number" step="any" class="input-field small" id="unc_kpol">
+          </div>
+          <div class="result-inline"><span class="factor-label">k<sub>pol</sub> =</span><span class="factor-value" id="kpolValue">—</span></div>
+        </div>
+      </div>
+
+      <div class="factor-card" data-factor="ks">
+        <div class="factor-header">
+          <label class="switch">
+            <input type="checkbox" id="usar_ks">
+            <span class="slider"></span>
+          </label>
+          <span class="factor-name">k<sub>s</sub> — recombinación iónica
+            <span class="help-icon" data-tip="Puede introducirse directamente o calcularse mediante el método de dos voltajes (polinomio TRS-398).">?</span>
+          </span>
+        </div>
+        <div class="factor-body" id="body_ks">
+          <div class="ks-mode">
+            <label><input type="radio" name="ksMode" value="manual" checked> Introducir k<sub>s</sub> directamente</label>
+            <label><input type="radio" name="ksMode" value="dosvolt"> Calcular por método de dos voltajes</label>
+          </div>
+          <div id="ksManualBlock">
+            <label>Valor de k<sub>s</sub></label>
+            <input type="number" step="any" class="input-field factor-input" id="ksManual">
+          </div>
+          <div id="ksDosVoltBlock" class="hidden-block">
+            <label>Lectura a voltaje normal, M<sub>1</sub></label>
+            <input type="number" step="any" class="input-field factor-input" id="ksM1">
+            <label>Lectura a voltaje reducido, M<sub>2</sub></label>
+            <input type="number" step="any" class="input-field factor-input" id="ksM2">
+            <label>Coeficientes a₀, a₁, a₂ (polinomio TRS-398, Ec. 2.10)
+              <span class="help-icon" data-tip="Los coeficientes del ajuste polinomial dependen del tipo de radiación. Introdúzcalos según la tabla del TRS-398.">?</span>
+            </label>
+            <div class="triple-input">
+              <input type="number" step="any" class="input-field small" id="ksA0" placeholder="a0">
+              <input type="number" step="any" class="input-field small" id="ksA1" placeholder="a1">
+              <input type="number" step="any" class="input-field small" id="ksA2" placeholder="a2">
+            </div>
+          </div>
+          <div class="factor-meta">
+            <label>Fuente / procedencia</label>
+            <input type="text" class="input-field small" value="TRS-398, sección 2.3 / Ec. 2.10" id="fuente_ks">
+            <label>Incertidumbre (%, k=1)</label>
+            <input type="number" step="any" class="input-field small" id="unc_ks">
+          </div>
+          <div class="result-inline"><span class="factor-label">k<sub>s</sub> =</span><span class="factor-value" id="ksValue">—</span></div>
+        </div>
+      </div>
+
+      <div class="factor-card" data-factor="kelec">
+        <div class="factor-header">
+          <label class="switch">
+            <input type="checkbox" id="usar_kelec">
+            <span class="slider"></span>
+          </label>
+          <span class="factor-name">k<sub>elec</sub> — calibración del electrómetro
+            <span class="help-icon" data-tip="Aplicable cuando la cámara y el electrómetro se calibraron por separado y el certificado no incluye ya esta corrección.">?</span>
+          </span>
+        </div>
+        <div class="factor-body" id="body_kelec">
+          <label>Valor de k<sub>elec</sub></label>
+          <input type="number" step="any" class="input-field factor-input" id="kelecValor">
+          <div class="factor-meta">
+            <label>Fuente / procedencia</label>
+            <input type="text" class="input-field small" placeholder="ej. certificado del electrómetro" id="fuente_kelec">
+            <label>Incertidumbre (%, k=1)</label>
+            <input type="number" step="any" class="input-field small" id="unc_kelec">
+          </div>
+        </div>
+      </div>
+
+      <div class="factor-card" data-factor="kplastic">
+        <div class="factor-header">
+          <label class="switch">
+            <input type="checkbox" id="usar_kplastic">
+            <span class="slider"></span>
+          </label>
+          <span class="factor-name">k<sub>plastic</sub> (u otra corrección adicional)
+            <span class="help-icon" data-tip="Utilícese solo si las condiciones o formalismo lo requieren.">?</span>
+          </span>
+        </div>
+        <div class="factor-body" id="body_kplastic">
+          <label>Valor de k<sub>plastic</sub></label>
+          <input type="number" step="any" class="input-field factor-input" id="kplasticValor">
+          <div class="factor-meta">
+            <label>Fuente / procedencia</label>
+            <input type="text" class="input-field small" id="fuente_kplastic">
+            <label>Incertidumbre (%, k=1)</label>
+            <input type="number" step="any" class="input-field small" id="unc_kplastic">
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ============ G. CALIDAD DEL HAZ ============ -->
+  <section class="panel" id="panel-G">
+    <h2><span class="section-letter">G</span> Calidad del haz</h2>
+    <div class="field-grid">
+      <div class="field">
+        <label for="tpr2010">TPR<sub>20,10</sub> medido
+          <span class="help-icon" data-tip="Índice de calidad del haz utilizado por el TRS-398 para haces de fotones de aceleradores lineales.">?</span>
+        </label>
+        <input type="number" step="any" id="tpr2010" class="input-field">
+      </div>
+      <div class="field">
+        <label for="tprIncertidumbre">Incertidumbre del TPR<sub>20,10</sub> (%, k=1)</label>
+        <input type="number" step="any" id="tprIncertidumbre" class="input-field">
+      </div>
+      <div class="field">
+        <label for="metodoTPR">Método de determinación</label>
+        <input type="text" id="metodoTPR" class="input-field" placeholder="ej. razón de lecturas a 20 y 10 cm, SSD fijo">
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ H. FACTOR kQ,Q0 MEDIANTE TRS-398 ============ -->
+  <section class="panel panel-wide" id="panel-H">
+    <h2><span class="section-letter">H</span> Factor de calidad del haz k<sub>Q,Q0</sub></h2>
+    <div class="kq-mode">
+      <label><input type="radio" name="kqMode" value="auto" checked> Modo automático: Cámara (TRS-398 Cuadro 14) + TPR<sub>20,10</sub> → Interpolación</label>
+      <label><input type="radio" name="kqMode" value="manual"> Modo manual: Introducir k<sub>Q,Q0</sub> directamente</label>
+    </div>
+
+    <div id="kqAutoBlock">
+      <div class="field-grid">
+        <div class="field">
+          <label for="kqFabricante">Fabricante de la cámara</label>
+          <select id="kqFabricante" class="input-field">
+            <option value="">-- Seleccionar Fabricante --</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="kqModelo">Modelo de la cámara</label>
+          <select id="kqModelo" class="input-field">
+            <option value="">-- Seleccionar Modelo --</option>
+          </select>
+        </div>
+      </div>
+      <div class="equation-box" style="margin-top: 12px;">
+        <p>Interpolación lineal usando datos del TRS-398 (Cuadro 14):</p>
+        <p class="equation">$$k_{Q,Q_0} = Y_1 + \dfrac{(X-X_1)}{(X_2-X_1)}\,(Y_2-Y_1)$$</p>
+      </div>
+      <div class="interp-detail" id="interpDetail">
+        <p>Seleccione un fabricante y modelo de cámara e introduzca el TPR<sub>20,10</sub> en la sección G para ver el detalle de la interpolación.</p>
+      </div>
+    </div>
+
+    <div id="kqManualBlock" class="hidden-block">
+      <div class="field-grid">
+        <div class="field">
+          <label for="kqManualValor">Valor de k<sub>Q,Q0</sub></label>
+          <input type="number" step="any" id="kqManualValor" class="input-field" placeholder="ej. 0.992">
+        </div>
+        <div class="field">
+          <label for="kqManualFuente">Fuente / Referencia</label>
+          <input type="text" id="kqManualFuente" class="input-field" placeholder="ej. Certificado, TRS-398 manual">
+        </div>
+      </div>
+    </div>
+
+    <div class="result-inline" id="kqResultBox">
+      <span class="factor-label">k<sub>Q,Q0</sub> =</span> <span class="factor-value" id="kqValue">—</span>
+    </div>
+  </section>
+
+  <!-- ============ I. CÁLCULO DE DOSIS ABSORBIDA ============ -->
+  <section class="panel panel-wide" id="panel-I">
+    <h2><span class="section-letter">I</span> Cálculo de dosis absorbida — formulación TRS-398</h2>
+    <div class="equation-box">
+      <p>Lectura corregida M<sub>Q</sub> (factores activados):</p>
+      <p class="equation">$$M_Q = M \times k_{TP} \times k_{pol} \times k_s \times k_{elec} \times k_{plastic}$$</p>
+      <p>Dosis absorbida en agua en el punto de referencia, en la calidad Q:</p>
+      <p class="equation">$$D_{w,Q} = M_Q \times N_{D,w} \times k_{Q,Q_0}$$</p>
+    </div>
+    <div class="button-row button-row-main">
+      <button type="button" class="btn btn-primary" id="btnCalcular">CALCULAR DOSIS</button>
+      <button type="button" class="btn btn-secondary" id="btnLimpiar">LIMPIAR</button>
+      <button type="button" class="btn btn-secondary" id="btnReiniciar">REINICIAR</button>
+    </div>
+  </section>
+
+  <!-- ============ J. RESULTADOS ============ -->
+  <section class="panel panel-wide panel-results" id="panel-J">
+    <h2><span class="section-letter">J</span> Resultados</h2>
+    <div class="dose-result-box">
+      <span class="dose-label">Dosis absorbida en agua</span>
+      <span class="dose-value" id="doseResultValue">— Gy</span>
+      <span class="dose-formula">D<sub>w,Q</sub></span>
+    </div>
+    <div class="results-grid" id="resultsGrid">
+      <div class="result-chip"><span>M (promedio)</span><b id="r_M">—</b></div>
+      <div class="result-chip"><span>k<sub>TP</sub></span><b id="r_kTP">—</b></div>
+      <div class="result-chip"><span>k<sub>pol</sub></span><b id="r_kpol">—</b></div>
+      <div class="result-chip"><span>k<sub>s</sub></span><b id="r_ks">—</b></div>
+      <div class="result-chip"><span>k<sub>elec</sub></span><b id="r_kelec">—</b></div>
+      <div class="result-chip"><span>k<sub>plastic</sub></span><b id="r_kplastic">—</b></div>
+      <div class="result-chip"><span>M<sub>Q</sub></span><b id="r_MQ">—</b></div>
+      <div class="result-chip"><span>N<sub>D,w</sub></span><b id="r_NDw">—</b></div>
+      <div class="result-chip"><span>TPR<sub>20,10</sub></span><b id="r_tpr">—</b></div>
+      <div class="result-chip"><span>k<sub>Q,Q0</sub></span><b id="r_kQ">—</b></div>
+    </div>
+
+    <h3 class="subsection-title">Detalle del cálculo (trazabilidad)</h3>
+    <ol class="calc-trace" id="calcTrace">
+      <li>Presione "CALCULAR DOSIS" para generar el detalle paso a paso.</li>
+    </ol>
+  </section>
+
+  <!-- ============ K. COMPARACIÓN CON TPS ============ -->
+  <section class="panel panel-wide" id="panel-K">
+    <h2><span class="section-letter">K</span> Comparación con TPS</h2>
+    <div class="field-grid">
+      <div class="field">
+        <label for="dosisMedidaTPS">Dosis medida D<sub>medida</sub> (Gy)</label>
+        <input type="number" step="any" id="dosisMedidaTPS" class="input-field" readonly placeholder="Calculada automáticamente">
+      </div>
+      <div class="field">
+        <label for="dosisTPS">Dosis TPS D<sub>TPS</sub> (Gy)</label>
+        <input type="number" step="any" id="dosisTPS" class="input-field" placeholder="ej. 2.000">
+      </div>
+    </div>
+    <div class="results-grid" style="margin-top: 14px;">
+      <div class="result-chip">
+        <span>Diferencia absoluta (D<sub>medida</sub> − D<sub>TPS</sub>)</span>
+        <b id="diffAbsTPS" class="diff-value-zero">— Gy</b>
+      </div>
+      <div class="result-chip">
+        <span>Diferencia porcentual (%)</span>
+        <b id="diffPctTPS" class="diff-value-zero">— %</b>
+      </div>
+    </div>
+    <div class="equation-box" style="margin-top: 12px;">
+      <p class="equation">$$\text{Diferencia Absoluta} = D_{\text{medida}} - D_{\text{TPS}}$$</p>
+      <p class="equation">$$\text{Diferencia Porcentual (\%)} = \left[ \dfrac{D_{\text{medida}} - D_{\text{TPS}}}{D_{\text{TPS}}} \right] \times 100$$</p>
+    </div>
+  </section>
+
+  <!-- ============ L. DOSIS MÁXIMA MEDIANTE PDD ============ -->
+  <section class="panel panel-wide" id="panel-L">
+    <h2><span class="section-letter">L</span> Dosis máxima mediante PDD</h2>
+    <div class="field-grid">
+      <div class="field">
+        <label for="dosisMedidaPDD">Dosis medida a la profundidad de medición D<sub>medida</sub> (Gy)</label>
+        <input type="number" step="any" id="dosisMedidaPDD" class="input-field" placeholder="Tomada de D_{w,Q} o editable">
+      </div>
+      <div class="field">
+        <label for="pddInput">PDD (%)</label>
+        <input type="number" step="any" id="pddInput" class="input-field" placeholder="ej. 67.5">
+      </div>
+    </div>
+    <div class="results-grid" style="margin-top: 14px;">
+      <div class="result-chip">
+        <span>Dosis a profundidad de medida</span>
+        <b id="r_dosisMedidaPDD">— Gy</b>
+      </div>
+      <div class="result-chip">
+        <span>PDD introducido</span>
+        <b id="r_pddInput">— %</b>
+      </div>
+      <div class="result-chip">
+        <span>Dosis máxima calculada (D<sub>max</sub>)</span>
+        <b id="r_dmaxCalculada">— Gy</b>
+      </div>
+    </div>
+    <div class="equation-box" style="margin-top: 12px;">
+      <p class="equation">$$D_{\text{max}} = \dfrac{D_{\text{medida}}}{PDD / 100} \quad \text{con } PDD = 100\% \text{ en } d_{\text{max}}$$</p>
+    </div>
+  </section>
+
+  <!-- ============ M. ADVERTENCIAS Y VALIDACIONES ============ -->
+  <section class="panel panel-wide" id="panel-M">
+    <h2><span class="section-letter">M</span> Advertencias y validaciones</h2>
+    <div id="warningsBox" class="warnings-box">
+      <p class="no-warnings">Sin advertencias. Complete los datos y presione "CALCULAR DOSIS".</p>
+    </div>
+    <div class="button-row button-row-main" style="margin-top: 16px;">
+      <button type="button" class="btn btn-secondary" id="btnExportCSV">EXPORTAR CSV</button>
+      <button type="button" class="btn btn-secondary" id="btnExportTXT">EXPORTAR TXT</button>
+      <button type="button" class="btn btn-secondary" id="btnImprimir">IMPRIMIR REPORTE</button>
+    </div>
+  </section>
+
+</main>
+
+<footer class="app-footer">
+  <p>Herramienta de apoyo para dosimetría según TRS-398 (IAEA). Todos los cálculos se ejecutan localmente en el navegador; no se envía ningún dato a servidores externos. Verifique siempre los resultados de forma independiente antes de su uso clínico.</p>
+</footer>
+
+<div class="tooltip-popup" id="tooltipPopup"></div>
+
+<script src="script.js"></script>
+</body>
+</html>
